@@ -1,2 +1,2 @@
-This is a test text.
+Delete is a test text.
 Modify this file.
