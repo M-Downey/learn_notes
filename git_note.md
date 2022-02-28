@@ -116,3 +116,51 @@ git config -e --system
     4. `git commit`
 
         **注意不能加文件名**
+
+### 远程库使用
+1. #### `git remote -v`
+
+    查看远程库
+2. #### `git remote add origin github_addr`
+
+    将github_addr命名为origin存储
+
+3. #### `git remote remove origin`
+
+    移除名为origin的远程库
+4.  #### `git push origin master`
+
+    将本地库push到origin库的master分支上
+    
+    ```
+    # fatal错误解决办法
+
+    git config --global http.proxy
+    git config --global --unset http.proxy
+
+    # clone时fatal将http改为git
+    ```
+5. #### `git clone addr`
+
+    1. #### 包含以下三种操作
+       1. 完整的把远程库下载到本地
+       2. 创建origin远程地址别名
+       3. 初始化本地库
+
+6. #### `git pull`
+
+    1. #### 相当于`fetch`和`merge`两个操作 
+    2. #### 单独的`fetch`抓取下来是新的分支
+
+7. #### 解决冲突
+
+    1. #### 如果不是基于GitHub远程库最新版的修改，则不能push，必须先pull
+    2. #### pull后如果冲突，就按照分支冲突进行解决，再add，commit
+
+8. #### ssh免密登录
+
+    1. `ssh-kengen -t rsa -C email_addr`
+    2. 默认生成在~/.ssh/下
+    3. 复制id_rsa.pub到github中的new SSH key
+    4. `git remote add origin_ssh ssh_addr`
+    5. `git push origin_ssh master`
