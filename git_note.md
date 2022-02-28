@@ -164,3 +164,5 @@ git config -e --system
     3. 复制id_rsa.pub到github中的new SSH key
     4. `git remote add origin_ssh ssh_addr`
     5. `git push origin_ssh master`
+    6. ssh原理：
+    https://blog.csdn.net/weixin_42310154/article/details/118340458
