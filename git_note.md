@@ -33,7 +33,7 @@ git config -e --system
 ```
 ### git基本操作
 1. #### `git add file`
-    
+   
     1. `git add file`将file存到暂存区
     
     2. `git add all`可以提交未跟踪，修改，删除文件
@@ -46,7 +46,7 @@ git config -e --system
 
     查看工作区、暂存区的状态
 4. #### `git rm --cached file`
-    
+   
     将file从暂存区删除
 5. #### `git restore file`
 
@@ -55,7 +55,7 @@ git config -e --system
 
     将
 7. #### `git log`
-    
+   
     1. #### 查看日志
     
        1. `git log`
@@ -123,7 +123,7 @@ git config -e --system
     查看远程库
 2. #### `git remote add origin github_addr`
 
-    将github_addr命名为origin存储
+    将`github_addr`命名为`origin`存储
 
 3. #### `git remote remove origin`
 
@@ -134,10 +134,10 @@ git config -e --system
     
     ```
     # fatal错误解决办法
-
+    
     git config --global http.proxy
     git config --global --unset http.proxy
-
+    
     # clone时fatal将http改为git
     ```
 5. #### `git clone addr`
@@ -157,12 +157,12 @@ git config -e --system
     1. #### 如果不是基于GitHub远程库最新版的修改，则不能push，必须先pull
     2. #### pull后如果冲突，就按照分支冲突进行解决，再add，commit
 
-8. #### ssh免密登录
+8. #### `ssh`免密登录
 
     1. `ssh-kengen -t rsa -C email_addr`
-    2. 默认生成在~/.ssh/下
-    3. 复制id_rsa.pub到github中的new SSH key
+    2. 默认生成在`~/.ssh/`下
+    3. 复制`id_rsa.pub`到`github`中的`new SSH key`
     4. `git remote add origin_ssh ssh_addr`
     5. `git push origin_ssh master`
-    6. ssh原理：
+    6. `ssh`原理：
     https://blog.csdn.net/weixin_42310154/article/details/118340458
