@@ -15,3 +15,17 @@
 > ```shell
 > git remote set-url origin git@github.com:zhangsan/shuofa.git
 > ```
+>
+> 3. zsh更新一直失败
+>
+> 也是提示443
+>
+> ```shell
+> git remote -v
+> ```
+>
+> 查看发现远程仓库也是`https`，照着2修改后即可
+>
+> ```shell
+> git remote set-url origin git@github.com:ohmyzsh/ohmyzsh.git
+> ```
