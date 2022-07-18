@@ -16,7 +16,7 @@
 > git remote set-url origin git@github.com:zhangsan/shuofa.git
 > ```
 >
-> 3. zsh更新一直失败
+> 3. `zsh`更新一直失败
 >
 > 也是提示443
 >
@@ -29,3 +29,13 @@
 > ```shell
 > git remote set-url origin git@github.com:ohmyzsh/ohmyzsh.git
 > ```
+>
+> 4. `ssh`失败
+>
+> ```shell
+> ssh -T git@github.com
+> 报错：
+> git ssh: Could not resolve hostname github.com: No address associated with hostname
+> ```
+>
+> [解决](https://blog.csdn.net/weixin_51299478/article/details/125609169)：在`hosts`中添加`github.com`的IP
