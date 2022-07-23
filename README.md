@@ -1,2 +1,2 @@
 # git_learn
-This repo is set to record notes about git
+This repo is set to record notes of learning
