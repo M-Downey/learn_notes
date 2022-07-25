@@ -15,18 +15,35 @@ sudo passwd user_name
 [解决方法：](https://blog.csdn.net/duanbiren123/article/details/80836408)
 
 ```shell
+# 在本机上
 # 修改了~/.ssh/known_hosts
 ssh-keygen -R Ip
 ```
 
-4. `ssh`登录服务器
+4. `ssh`免密登录服务器
 
 ```shell
 # 需要密码的
 ssh user_name@Ip
 # ssh免密登录，要先在服务器对应用户下添加公钥
 # 在本机下
-ssh-copy-id -i ~/.ssh/id_rsa.pub user_name@IP 
+ssh-copy-id -i ~/.ssh/id_rsa.pub user_name@IP
+```
+
+5. `ssh config`方便`ssh`登录
+
+```shell
+# 为了不用每次登录服务器输入ip，端口转发等信息
+# 配置~/.ssh/config(用户)
+# 系统的在/etc/ssh/下
+# 教程：https://blog.csdn.net/senlin1202/article/details/122081089
+
+# ssh ubuntu即可登录
+Host ubuntu
+  HostName 124.223.204.233
+  User ubuntu
+  IdentityFile ~/.ssh/id_rsa
+  LocalForward 8999 localhost:8999（服务器端口）
 ```
 
 5. 创建用户
@@ -62,8 +79,6 @@ conda install nb_conda
 # 每个环境都安装jupyter notebook
 # 重启jupyter
 ```
-
-
 
 #### `Jupyter`
 
