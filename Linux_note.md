@@ -415,7 +415,7 @@ passwd()
    >    tar -tf test.tar
    >    # 从tar文件中提取内容
    >    tar -xvf test.tar
-   >       
+   >                   
    >    # 解压.tgz
    >    tar -zxvf filename.tgz
    >    ```
@@ -470,7 +470,7 @@ passwd()
    >
    >    ```shell
    >    coproc sleep 10
-   >    
+   >                
    >    # 自定义进程名，后面花括号要有空格和;
    >    coproc My_Job { sleep 10; }
    >    ```
@@ -512,4 +512,157 @@ passwd()
      - `set`：所有全局变量，局部变量，用户自定义变量
 2. 设置环境变量
    - 设置**局部环境变量**，variable=value即可，含空格的字符串要加引号
-   - 设置**全局环境变量**，
+   - 设置**全局环境变量**，要用export。子shell中修改全局环境变量无法影响父shell中的全局环境变量
+
+3. 删除环境变量
+
+   - unset
+
+4. PATH环境变量
+
+   - 用于shell执行外部命令时，搜索外部命令的路径
+
+   - 添加方式：
+
+     - ```shell
+       PATH=$PATH:/home/ubuntu/new_path
+       export PATH
+       ```
+
+   - 对PATH变量的修改只能持续到**退出或重启系统**，不能永久保持其修改效果
+
+5. shell
+
+   1. 登录shell启动执行文件：
+      - /etc/profile
+      - $HOME/.bash_profile，顺序1
+      - $HOME/.bashrc（该文件常通过其他文件运行）
+      - $HOME/.bash_login，顺序2
+      - $HOME/.profile，顺序3
+   2. 交互式shell
+      - 只会检查$HOME/.bashrc
+   3. 非交互式shell
+      - 系统执行shell脚本的时候用这种shell
+      - 用$BASH_ENV变量检查是有要执行的启动文件（执行一些命令设置环境变量等）
+      - 如果没有的话，**如果脚本创建了子shell**，就只继承父shell的全局变量
+      - **如果脚本不启动子shell**，那变量都存在本shell中
+
+6. **环境变量持久化**
+
+   1. 系统
+      - 可以放在/etc/profile（会因为更新发行版而更新，定制过的变量就没了）
+      - 最好放在/etc/profile.d中，创建一个.sh文件
+   2. 用户
+      - 在$HOME/.bashrc中
+
+7. 数组变量
+
+   1. 定义数组变量
+
+      ```shell
+      my_array=(one tow three four)
+      ```
+
+   2. 访问
+
+      ```shell
+      echo ${my_array[2]}
+      # three
+      ```
+
+##### 七. 理解Linux文件权限
+
+1. Linux的安全性
+   1. /etc/passwd文件
+      - 用户名匹配了UID
+      - 第二个字段x是密码，现在密码都单独放在/etc/shadow中  
+   2. 添加新用户
+      - `useradd`默认不会创建家目录
+      - `-m user_name`选项可以创建家目录，并把`/etc/skel`目录中的文件（shell标准启动文件）复制过来
+   3. 删除用户
+      - `uderdel`
+      - 只会删除`/etc/passwd`中的用户信息，不会删除用户文件
+      - `-r`参数，会删除用户家目录和邮件目录
+   4. 修改用户
+      - `usermod`，能修改`/etc/passwd`中的大部分字段
+        - `-l`修改用户账户的用户名
+        - `-L`锁定账户，无法登录
+        - `-p`修改账户密码
+        - `-U`解除锁定，使用户可以登录
+      - `passwd`和`chpasswd`
+        - `passwd`修改用户的密码，`-e`选项强制用户下次登录时修改密码
+        - `chpasswd`可以从标准输入自动读取**登录名:密码对**列表，给用户设置
+      - `chsh`，`chfn`，`chage`
+        - `chsh`用于修改用户登录shell，必须是shell的全路径名
+        - `chfn`提供了在`/etc/passwd`中备注字段中存储信息的标准方法
+        - `chage`用来帮助管理用户账户的有效期
+2. 使用Linux组
+   1. `/etc/group`包含每个组的组名，密码，GID，用户列表
+   2. 创建新组
+      - `groupadd`创建新组
+      - 创建新组没有添加用户，可以用`usermod`来添加用户，`-G group user`把用户添加到组里
+   3. 修改组
+      - `groupmod`可以修改组
+      - `-g`修改GID
+      - `-n`修改组名
+3. 理解文件权限
+   1. 使用文件权限符
+      - `ls -l`看到第一个字段是文件类型（-文件，d是目录），后面三个是属主，属组，其他用户的权限
+   2. 默认文件权限
+      - `mask`是用默认权限减去这个值
+      - 文件默认权限`666`，读写，目录默认权限`777`读写执行，减去`mask`，就是真的权限
+
+4. 改变安全性设置、
+
+   1. 改变权限
+
+      - `chmod options mode file`
+
+      - 可以用八进制模式如760或符号模式
+
+      - ```shell
+        # 给其他用户添加r权限
+        chmod o+r newfile
+        # 移除属主的执行权限
+        chmod u-x newfile
+        ```
+
+   2. 改变所属关系
+
+      - `chown options owner[.group] file`
+
+      - ```shell
+        # 改变属主
+        chown dan newfile
+        # 改变属主和属组
+        chown dan.shared newfile
+        ```
+
+      - `chgrp group file`改变文件的属组
+
+5. 共享文件
+
+   1. Linux为每个文件和目录存储了3个额外的信息位
+
+      - 设置用户ID，SUID：当文件被使用时，程序会以文件属主的权限运行
+      - 设置组ID，SGID：对文件来说，程序会以文件数组的权限运行；对目录来说，目录中创建的新文件会以目录的默认属组作为属组
+      - 黏着位：进程结束后文件还驻留在内存中
+
+   2. 要创建一个共享目录，只需设置其SGID
+
+      ```shell
+      mkdir testdir
+      # 改变属组
+      chgrp shared testdir
+      # 设置SGID
+      chmod g+s testdir
+      # 属性664，属组权限是可读写
+      umask 002
+      # 创建文件，属组是shared
+      touch testfile
+      ```
+
+##### 八. 管理文件系统
+
+1. 探索Linux文件系统
+   1. 
